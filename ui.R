@@ -57,7 +57,8 @@ fluidPage(
   useShinyjs(),
   #https://cran.r-project.org/web/packages/shinyjs/vignettes/overview.html
   #http://stackoverflow.com/questions/13338780/how-to-make-twitter-bootstrap-tooltips-have-multiple-lines
-  extendShinyjs(text = jsCode),
+  extendShinyjs(text = jsCode, functions = c("activateTooltips", "hideTooltips", 
+	"addHandlers", "changeClicked")),
   titlePanel(
     fluidRow(
       img(src = "frontPage/logo_small.png", width = 125, style = "margin-top:-10px; margin-right:-10px"),

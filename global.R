@@ -1,16 +1,18 @@
 #Author: Tauno Metsalu
 #Copyright: 2018 University of Tartu
 
-path = "/srv/shiny-server/" #path of this file
-libPath = "/usr/local/lib/R/site-library/" #path of R libraries
-sessPathLarge = "/srv/settings_large/" #where to save settings with large datasets
-sessPath = "/srv/settings/" #where to save settings
-sessPathExternal = "/srv/settings_external/" #where to save settings for externally saved datasets
-pbPathPrefix = "/srv/data_pb/" #path of MEM files
+path = paste0(getwd(), "/") #path of this file
+sessPathLarge = paste(path, "settings_large/", sep = '/') #where to save settings with large datasets
+sessPath = paste(path, "settings/", sep = "/") #where to save settings
+sessPathExternal = paste(path, "settings_external/", sep = "/") #where to save settings for externally saved datasets
+pbPathPrefix = paste(path, "data_pb/", sep = '/') #path of MEM files
+source("Rpackage/R/clustvis.R")
+for (i in c(sessPathLarge, sessPath, sessPathExternal, pbPathPrefix)) {
+  if (!dir.exists(i)) {
+    dir.create(i)
+  }
+}
 
-source("/srv/shiny-server/Rpackage/R/clustvis.R")
-
-.libPaths(libPath)
 suppressPackageStartupMessages({
   library(stringr)
   library(RNetCDF)
@@ -116,7 +118,7 @@ setwd(sessPath)
 
 gprofDate = "20150416" #"20150205" #gprofOntos file
 pwDate = "20150416" #"20150205" #clustvisInput file
-pwPath = str_c(path, "datasets/")
+pwPath = str_c(path, "/datasets/")
 load(file = str_c(pwPath, "clustvisInput_", pwDate, ".RData"))
 str = strsplit(projectBrowserPath, "/")[[1]]
 projectBrowserPath = str_c(pbPathPrefix, str[length(str)], "/")
@@ -128,7 +130,6 @@ uploadInputOptions = list("Load sample data" = 1, "Upload file" = 2,
 if(clustvisEdition == "custom"){
   uploadInputOptions[[which(uploadInputOptions == 5)]] = NULL
 }
-
 allAnno = "All annotations" #name for the default annotation group
 #change font to Arial:
 fonts = getSVGFonts()
